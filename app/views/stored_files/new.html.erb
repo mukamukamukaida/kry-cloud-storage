@@ -1,0 +1,15 @@
+<h1>Upload File</h1>
+<%= form_with model: @stored_file, local: true do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :s3_key %>
+    <%= f.file_field :s3_key %>
+  </div>
+  <div>
+    <%= f.hidden_field :folder_id, value: params[:folder_id] %>
+    <%= f.submit "Upload File" %>
+  </div>
+<% end %>

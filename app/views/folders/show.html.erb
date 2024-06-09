@@ -1,0 +1,20 @@
+<h1><%= @folder.name %></h1>
+<%= link_to 'Edit', edit_folder_path(@folder) %> |
+<%= link_to 'Delete', folder_path(@folder), method: :delete, data: { confirm: 'Are you sure?' } %>
+
+<h2>Subfolders</h2>
+<% @folder.subfolders.each do |subfolder| %>
+  <div>
+    <%= link_to subfolder.name, folder_path(subfolder) %>
+  </div>
+<% end %>
+<%= link_to 'New Subfolder', new_folder_path(parent_id: @folder.id) %>
+
+<h2>Files</h2>
+<% @folder.files.each do |file| %>
+  <div>
+    <%= link_to file.name, rails_blob_path(file.s3_key, disposition: "attachment") %> |
+    <%= link_to 'Delete', file_path(file), method: :delete, data: { confirm: 'Are you sure?' } %>
+  </div>
+<% end %>
+<%= link_to 'Upload File', new_file_path(folder_id: @folder.id) %>
