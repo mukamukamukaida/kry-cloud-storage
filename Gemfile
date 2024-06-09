@@ -70,3 +70,9 @@ group :test do
   gem "selenium-webdriver"
 
 end
+
+gem 'dotenv-rails', groups: [:development, :test]
+
+gem 'bcrypt', '~> 3.1.7'
+
+gem 'aws-sdk-s3'
