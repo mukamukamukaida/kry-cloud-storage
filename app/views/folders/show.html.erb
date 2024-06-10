@@ -1,24 +1,21 @@
-<h1><%= @folder.name %></h1>
-<%= link_to 'New Subfolder', new_folder_path(parent_id: @folder.id) %> |
-<%= link_to 'Upload File', new_stored_file_path(folder_id: @folder.id) %>
+<div class="container">
+  <h1><%= @folder.name %></h1>
+  <%= link_to 'New Subfolder', new_folder_path(parent_id: @folder.id), class: 'btn btn-primary' %> |
+  <%= link_to 'Upload File', new_stored_file_path(folder_id: @folder.id), class: 'btn btn-secondary' %>
 
-<h2>Subfolders</h2>
-<ul>
-  <% @subfolders.each do |subfolder| %>
-    <li>
-      <%= link_to subfolder.name, folder_path(subfolder) %>
-      <%= link_to 'Edit', edit_folder_path(subfolder) %> |
-      <%= link_to 'Delete', folder_path(subfolder), method: :delete, data: { confirm: 'Are you sure?' } %>
-    </li>
-  <% end %>
-</ul>
+  <h2>Subfolders</h2>
+  <div class="folders">
+    <%= render_folder_tree(@folder) %>
+  </div>
 
-<h2>Files</h2>
-<ul>
-  <% @stored_files.each do |stored_file| %>
-    <li>
-      <%= link_to stored_file.name, rails_blob_path(stored_file.s3_key, disposition: "attachment") %> |
-      <%= link_to 'Delete', stored_file_path(stored_file), method: :delete, data: { confirm: 'Are you sure?' } %>
-    </li>
-  <% end %>
-</ul>
+  <h2>Files</h2>
+  <div class="files">
+    <% @stored_files.each do |stored_file| %>
+      <div class="file">
+        <img src="<%= asset_path('file-icon.svg') %>" class="file-icon" alt="File">
+        <div class="file-name"><%= link_to stored_file.name, rails_blob_path(stored_file.s3_key, disposition: "attachment") %></div>
+        <%= link_to 'Delete', stored_file_path(stored_file), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+      </div>
+    <% end %>
+  </div>
+</div>
