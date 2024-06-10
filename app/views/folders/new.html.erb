@@ -4,6 +4,7 @@
     <%= f.label :name %>
     <%= f.text_field :name %>
   </div>
+  <%= f.hidden_field :ancestry, value: params[:parent_id] %>
   <div>
     <%= f.submit "Create Folder" %>
   </div>
