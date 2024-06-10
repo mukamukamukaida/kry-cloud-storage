@@ -1,7 +1,15 @@
 <div class="container">
   <h1><%= @folder.name %></h1>
-  <%= link_to 'New Subfolder', new_folder_path(parent_id: @folder.id), class: 'btn btn-primary' %> |
-  <%= link_to 'Upload File', new_stored_file_path(folder_id: @folder.id), class: 'btn btn-secondary' %>
+  <%= link_to 'New Subfolder', new_folder_path(parent_id: @folder.id), class: 'btn btn-primary' %>
+
+  <div id="file-upload-form">
+    <h2>ファイルをアップロード</h2>
+    <form id="upload-form" action="<%= folder_stored_files_path(@folder) %>" method="post" enctype="multipart/form-data">
+      <input type="file" name="stored_files[file][]" multiple>
+      <input type="hidden" name="stored_files[folder_id]" value="<%= @folder.id %>">
+      <input type="submit" value="アップロード">
+    </form>
+  </div>
 
   <h2>Subfolders</h2>
   <div class="folders">
@@ -13,8 +21,12 @@
     <% @stored_files.each do |stored_file| %>
       <div class="file">
         <img src="<%= asset_path('file-icon.svg') %>" class="file-icon" alt="File">
-        <div class="file-name"><%= link_to stored_file.name, rails_blob_path(stored_file.s3_key, disposition: "attachment") %></div>
-        <%= link_to 'Delete', stored_file_path(stored_file), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+        <% if stored_file.file.attached? %>
+          <div class="file-name"><%= link_to stored_file.file.filename.to_s, rails_blob_path(stored_file.file, disposition: "attachment") %></div>
+          <%= link_to 'Delete', folder_stored_file_path(@folder, stored_file), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+        <% else %>
+          <div class="file-name">ファイルが添付されていません</div>
+        <% end %>
       </div>
     <% end %>
   </div>
