@@ -1,5 +1,5 @@
 <% if @folder && @folder.persisted? %>
-  <% ancestors = @folder.ancestors + [@folder] %>
+  <% ancestors = @folder.path + [@folder] %>
   <nav>
     <% ancestors.each do |ancestor| %>
       <%= link_to ancestor.name, folder_path(ancestor) %> /

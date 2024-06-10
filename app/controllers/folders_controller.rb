@@ -3,14 +3,16 @@ class FoldersController < ApplicationController
   before_action :set_folder, only: %i[show edit update destroy]
 
   def index
-    @folders = current_user.folders.where(parent_id: nil)
+    @folders = current_user.folders.roots
   end
 
   def show
+    @subfolders = @folder.children
+    @stored_files = @folder.stored_files
   end
 
   def new
-    @folder = current_user.folders.build(parent_id: params[:parent_id])
+    @folder = current_user.folders.build(parent: Folder.find_by(id: params[:parent_id]))
   end
 
   def create
@@ -45,6 +47,6 @@ class FoldersController < ApplicationController
   end
 
   def folder_params
-    params.require(:folder).permit(:name, :parent_id)
+    params.require(:folder).permit(:name, :ancestry)
   end
 end
