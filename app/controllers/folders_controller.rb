@@ -7,7 +7,8 @@ class FoldersController < ApplicationController
   end
 
   def show
-    @subfolders = @folder.children
+    @folder = current_user.folders.find(params[:id])
+    @all_folders = current_user.folders
     @stored_files = @folder.stored_files
   end
 
